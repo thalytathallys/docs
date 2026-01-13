@@ -1,0 +1,32 @@
+---
+title: "Obter Agendamento"
+api: "GET /agendamentos/{id}"
+description: "Retorna detalhes de um agendamento especifico"
+---
+
+<ParamField path="id" type="string" required>
+  ID do agendamento
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/agendamentos/clx1234567890
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "agendamento": {
+    "id": "clx1234567890",
+    "dataHora": "2024-01-15T14:00:00Z",
+    "status": "pendente",
+    "divulgacao": { ... }
+  }
+}
+```
+
+</ResponseExample>

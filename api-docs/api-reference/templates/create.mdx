@@ -1,0 +1,62 @@
+---
+title: "Criar Template"
+api: "POST /templates"
+description: "Cria um novo template de mensagem"
+---
+
+<ParamField body="nome" type="string" required>
+  Nome do template
+</ParamField>
+
+<ParamField body="conteudo" type="string" required>
+  Conteudo com variaveis
+</ParamField>
+
+<ParamField body="isDefault" type="boolean" default="false">
+  Definir como padrao
+</ParamField>
+
+<ParamField body="emojiTitulo" type="string">
+  Emoji do titulo (max 12 chars)
+</ParamField>
+
+<ParamField body="emojiPreco" type="string">
+  Emoji do preco
+</ParamField>
+
+<ParamField body="emojiLink" type="string">
+  Emoji do link
+</ParamField>
+
+<ParamField body="emojiDesconto" type="string">
+  Emoji do desconto
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/templates \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Meu Template",
+    "conteudo": "{gancho}\n\n{nome}\nPreco: {preco}",
+    "isDefault": false
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "template": {
+    "id": "clx123",
+    "nome": "Meu Template",
+    "conteudo": "...",
+    "isDefault": false
+  }
+}
+```
+
+</ResponseExample>

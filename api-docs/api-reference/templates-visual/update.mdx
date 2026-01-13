@@ -1,0 +1,17 @@
+---
+title: "Atualizar Template Visual"
+api: "PUT /templates-visual/{id}"
+description: "Atualiza um template visual"
+---
+
+<ParamField path="id" type="string" required>ID</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X PUT http://localhost:3000/api/templates-visual/clx123 \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "Novo Nome", "corFundo": "#00FF00"}'
+```
+
+</RequestExample>

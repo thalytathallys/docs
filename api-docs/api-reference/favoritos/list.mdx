@@ -1,0 +1,35 @@
+---
+title: "Listar Favoritos"
+api: "GET /favoritos"
+description: "Lista todos os produtos favoritos"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/favoritos
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "favoritos": [
+    {
+      "id": "clx123",
+      "itemId": "12345678",
+      "shopId": "87654321",
+      "productName": "Fone Bluetooth TWS",
+      "price": 49.90,
+      "priceDiscountRate": 30,
+      "imageUrl": "https://...",
+      "commissionRate": 8.5,
+      "offerLink": "https://shope.ee/..."
+    }
+  ]
+}
+```
+
+</ResponseExample>

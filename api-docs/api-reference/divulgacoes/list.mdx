@@ -1,0 +1,73 @@
+---
+title: "Listar Divulgacoes"
+api: "GET /divulgacoes"
+description: "Lista divulgacoes com filtros e paginacao"
+---
+
+<ParamField query="query" type="string">
+  Texto de busca no nome do produto
+</ParamField>
+
+<ParamField query="status" type="string">
+  Filtrar por status: `rascunho`, `agendada`, `enviando`, `enviada`, `erro`
+</ParamField>
+
+<ParamField query="start" type="string">
+  Data inicial (ISO 8601)
+</ParamField>
+
+<ParamField query="end" type="string">
+  Data final (ISO 8601)
+</ParamField>
+
+<ParamField query="page" type="integer" default="1">
+  Numero da pagina
+</ParamField>
+
+<ParamField query="limit" type="integer" default="20">
+  Itens por pagina (max 100)
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl "http://localhost:3000/api/divulgacoes?status=enviada&page=1&limit=10"
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "divulgacoes": [
+    {
+      "id": "clx1234567890",
+      "produtoNome": "Fone Bluetooth TWS",
+      "produtoImagem": "https://...",
+      "produtoLink": "https://shope.ee/...",
+      "textoFinal": "Oferta imperdivel!...",
+      "status": "enviada",
+      "createdAt": "2024-01-15T10:00:00Z",
+      "updatedAt": "2024-01-15T14:30:00Z",
+      "agendamento": {
+        "id": "clx9876543210",
+        "dataHora": "2024-01-15T14:00:00Z",
+        "status": "concluido"
+      },
+      "resumo": {
+        "total": 10,
+        "enviados": 10,
+        "pendentes": 0,
+        "erros": 0
+      }
+    }
+  ],
+  "total": 45,
+  "page": 1,
+  "pageSize": 10,
+  "totalPages": 5
+}
+```
+
+</ResponseExample>

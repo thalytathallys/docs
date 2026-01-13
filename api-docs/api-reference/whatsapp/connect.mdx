@@ -1,0 +1,24 @@
+---
+title: "Conectar WhatsApp"
+api: "POST /whatsapp/connect"
+description: "Inicia conexao com a instancia do WhatsApp"
+---
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/whatsapp/connect
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "qrcode": "data:image/png;base64,...",
+  "status": "connecting"
+}
+```
+
+</ResponseExample>

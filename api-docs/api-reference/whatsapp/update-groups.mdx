@@ -1,0 +1,53 @@
+---
+title: "Atualizar Grupos"
+api: "POST /whatsapp/grupos"
+description: "Atualiza configuracoes dos grupos (ativacao e colecao)"
+---
+
+Atualiza as configuracoes dos grupos de WhatsApp, incluindo ativacao e associacao a colecoes.
+
+<ParamField body="grupos" type="array" required>
+  Lista de grupos a serem atualizados
+
+  <Expandable title="Propriedades">
+    <ParamField body="id" type="string" required>
+      JID do grupo (formato: `{id}@g.us`)
+    </ParamField>
+    <ParamField body="nome" type="string" required>
+      Nome do grupo
+    </ParamField>
+    <ParamField body="colecaoId" type="string">
+      ID da colecao (opcional)
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="selecionados" type="array">
+  IDs dos grupos que devem ficar ativos
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/whatsapp/grupos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "grupos": [
+      {"id": "120363295648424210@g.us", "nome": "Promocoes Diarias", "colecaoId": "clx123"},
+      {"id": "120363295648424211@g.us", "nome": "Ofertas Relampago"}
+    ],
+    "selecionados": ["120363295648424210@g.us"]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "ok": true
+}
+```
+
+</ResponseExample>

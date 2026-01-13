@@ -1,0 +1,17 @@
+---
+title: "Criar Colecao"
+api: "POST /colecoes"
+description: "Cria uma nova colecao de grupos"
+---
+
+<ParamField body="nome" type="string" required>Nome da colecao</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/colecoes \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "Grupos Premium"}'
+```
+
+</RequestExample>

@@ -1,0 +1,46 @@
+---
+title: "Obter Configuracao"
+api: "GET /automacao"
+description: "Retorna configuracao da automacao, grupos ativos e logs"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/automacao
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "automacao": {
+    "id": "clx123",
+    "isActive": true,
+    "palavrasChave": ["fone", "carregador"],
+    "descontoMinimo": 20,
+    "comissaoMinima": 5,
+    "horarioInicio": "08:00",
+    "horarioFim": "20:00",
+    "diasSemana": [1, 2, 3, 4, 5],
+    "intervaloMinutos": 30,
+    "limiteDiario": 20,
+    "gruposIds": ["120363...@g.us"]
+  },
+  "grupos": [
+    {"id": "120363...@g.us", "nome": "Grupo 1", "isActive": true}
+  ],
+  "resumo": {
+    "ultimoRun": "2024-01-15T14:30:00Z",
+    "ultimoResultado": "Divulgacao criada",
+    "totalHoje": 8
+  },
+  "logs": [
+    {"id": "clx456", "tipo": "exec", "mensagem": "...", "createdAt": "..."}
+  ]
+}
+```
+
+</ResponseExample>

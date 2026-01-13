@@ -1,0 +1,34 @@
+---
+title: "Adicionar Favorito"
+api: "POST /favoritos"
+description: "Adiciona um produto aos favoritos"
+---
+
+<Note>
+O favorito usa upsert por `itemId + shopId`. Se ja existir, atualiza os dados.
+</Note>
+
+<ParamField body="itemId" type="string" required>ID do item</ParamField>
+<ParamField body="shopId" type="string" required>ID da loja</ParamField>
+<ParamField body="productName" type="string" required>Nome</ParamField>
+<ParamField body="price" type="number" required>Preco</ParamField>
+<ParamField body="imageUrl" type="string" required>URL da imagem</ParamField>
+<ParamField body="priceDiscountRate" type="number">Desconto (%)</ParamField>
+<ParamField body="commissionRate" type="number">Comissao (%)</ParamField>
+<ParamField body="offerLink" type="string">Link de afiliado</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/favoritos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "itemId": "12345678",
+    "shopId": "87654321",
+    "productName": "Fone Bluetooth",
+    "price": 49.90,
+    "imageUrl": "https://..."
+  }'
+```
+
+</RequestExample>

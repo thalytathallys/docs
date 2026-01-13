@@ -1,0 +1,132 @@
+---
+title: "Automacao"
+description: "Configure divulgacoes automaticas baseadas em regras"
+---
+
+# Automacao
+
+A automacao permite que o sistema busque e divulgue produtos automaticamente.
+
+## Como Funciona
+
+```
+Cron (minuto) → Verificar regras → Buscar produtos → Criar divulgacao → Enviar
+```
+
+1. O cron executa a cada minuto
+2. Verifica se esta dentro do horario e dia configurados
+3. Verifica se ja passou o intervalo desde o ultimo envio
+4. Busca produtos na Shopee com os filtros configurados
+5. Seleciona um produto aleatorio
+6. Cria a divulgacao e envia para os grupos
+
+## Configuracao
+
+```json
+{
+  "isActive": true,
+  "palavrasChave": ["fone", "carregador", "capa celular"],
+  "descontoMinimo": 20,
+  "comissaoMinima": 5,
+  "horarioInicio": "08:00",
+  "horarioFim": "20:00",
+  "diasSemana": [1, 2, 3, 4, 5],
+  "intervaloMinutos": 30,
+  "limiteDiario": 20,
+  "gruposIds": ["120363...@g.us"]
+}
+```
+
+### Parametros
+
+| Parametro | Tipo | Descricao |
+|-----------|------|-----------|
+| `isActive` | boolean | Ativa/desativa a automacao |
+| `palavrasChave` | string[] | Keywords para busca de produtos |
+| `descontoMinimo` | number | Desconto minimo (%) |
+| `comissaoMinima` | number | Comissao minima (%) |
+| `horarioInicio` | string | Inicio do periodo de envio (HH:mm) |
+| `horarioFim` | string | Fim do periodo de envio (HH:mm) |
+| `diasSemana` | number[] | Dias ativos (0=Dom, 6=Sab) |
+| `intervaloMinutos` | number | Intervalo minimo entre envios |
+| `limiteDiario` | number | Maximo de envios por dia |
+| `gruposIds` | string[] | IDs dos grupos de destino |
+
+## Configurar Automacao
+
+```bash
+curl -X PUT /api/automacao \
+  -d '{
+    "isActive": true,
+    "palavrasChave": ["smartphone", "tablet"],
+    "descontoMinimo": 30,
+    "comissaoMinima": 8,
+    "horarioInicio": "09:00",
+    "horarioFim": "21:00",
+    "diasSemana": [0, 1, 2, 3, 4, 5, 6],
+    "intervaloMinutos": 60,
+    "limiteDiario": 15,
+    "gruposIds": ["120363...@g.us", "120364...@g.us"]
+  }'
+```
+
+## Executar Manualmente
+
+Para testar, execute a automacao manualmente:
+
+```bash
+curl -X POST /api/automacao/run
+```
+
+## Monitorar Execucoes
+
+A API retorna logs das ultimas execucoes:
+
+```json
+{
+  "resumo": {
+    "ultimoRun": "2024-01-15T14:30:00Z",
+    "ultimoResultado": "Divulgacao criada com sucesso",
+    "totalHoje": 8
+  },
+  "logs": [
+    {
+      "id": "uuid",
+      "tipo": "exec",
+      "mensagem": "Automacao executada",
+      "dados": {"produtoId": "123"},
+      "createdAt": "2024-01-15T14:30:00Z"
+    }
+  ]
+}
+```
+
+### Tipos de Log
+
+| Tipo | Descricao |
+|------|-----------|
+| `exec` | Execucao da automacao |
+| `divulgacao` | Divulgacao criada |
+| `erro` | Erro na execucao |
+
+## Cron Endpoint
+
+O cron e acionado via `/api/cron/automacao`:
+
+```bash
+curl -X POST /api/cron/automacao \
+  -H "Authorization: Bearer ${CRON_SECRET}"
+```
+
+<Warning>
+O endpoint de cron requer o header `Authorization` com o `CRON_SECRET` configurado nas variaveis de ambiente.
+</Warning>
+
+## Boas Praticas
+
+<Tip>
+- Comece com intervalos maiores (60+ min) e reduza gradualmente
+- Use palavras-chave especificas para evitar produtos irrelevantes
+- Monitore os logs para ajustar os filtros
+- Mantenha o limite diario conservador para evitar spam
+</Tip>

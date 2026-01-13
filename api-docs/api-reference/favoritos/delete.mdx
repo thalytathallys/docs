@@ -1,0 +1,15 @@
+---
+title: "Remover Favorito"
+api: "DELETE /favoritos/{id}"
+description: "Remove um produto dos favoritos"
+---
+
+<ParamField path="id" type="string" required>ID do favorito</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X DELETE http://localhost:3000/api/favoritos/clx123
+```
+
+</RequestExample>

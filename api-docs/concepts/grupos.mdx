@@ -1,0 +1,131 @@
+---
+title: "Grupos WhatsApp"
+description: "Gerenciamento de grupos de WhatsApp para divulgacao"
+---
+
+# Grupos WhatsApp
+
+Os grupos de WhatsApp sao os destinos das suas divulgacoes.
+
+## Conexao
+
+Antes de usar os grupos, voce precisa conectar sua instancia do WhatsApp:
+
+```bash
+# Obter QR Code
+curl -X POST /api/whatsapp/connect
+
+# Verificar status
+curl /api/whatsapp/status
+```
+
+## Formato JID
+
+Os grupos sao identificados pelo JID (Jabber ID) no formato:
+
+```
+{id}@g.us
+```
+
+Exemplo: `120363295648424210@g.us`
+
+<Warning>
+Sempre use o JID completo com `@g.us` ao referenciar grupos.
+</Warning>
+
+## Listar Grupos
+
+```bash
+curl /api/whatsapp/grupos
+```
+
+Resposta:
+
+```json
+{
+  "grupos": [
+    {
+      "id": "120363295648424210@g.us",
+      "subject": "Promocoes Diarias",
+      "isActive": true,
+      "colecaoId": "uuid-colecao",
+      "colecaoNome": "Melhores Grupos"
+    }
+  ],
+  "instance": {
+    "id": "uuid",
+    "instanceName": "minha_instancia",
+    "status": "connected"
+  }
+}
+```
+
+## Ativar/Desativar Grupos
+
+Controle quais grupos recebem divulgacoes:
+
+```bash
+curl -X POST /api/whatsapp/grupos \
+  -d '{
+    "grupos": [
+      {"id": "120363...@g.us", "nome": "Grupo 1"},
+      {"id": "120364...@g.us", "nome": "Grupo 2"}
+    ],
+    "selecionados": ["120363...@g.us"]
+  }'
+```
+
+No exemplo acima, apenas "Grupo 1" estara ativo.
+
+## Colecoes de Grupos
+
+Organize seus grupos em colecoes para facilitar o gerenciamento:
+
+```bash
+# Criar colecao
+curl -X POST /api/colecoes \
+  -d '{"nome": "Grupos Premium"}'
+
+# Associar grupo a colecao
+curl -X POST /api/whatsapp/grupos \
+  -d '{
+    "grupos": [
+      {"id": "120363...@g.us", "nome": "Grupo 1", "colecaoId": "uuid-colecao"}
+    ],
+    "selecionados": ["120363...@g.us"]
+  }'
+```
+
+## Rate Limiting
+
+<Warning>
+O WhatsApp tem limites de envio. O sistema aplica automaticamente um delay de 2-3 segundos entre mensagens para evitar bloqueios.
+</Warning>
+
+Configuracoes de limite:
+
+| Parametro | Valor Padrao | Descricao |
+|-----------|--------------|-----------|
+| Delay entre mensagens | 2-3s | Intervalo entre envios |
+| Limite diario | 100 | Maximo de envios por dia |
+
+## Metricas por Grupo
+
+O dashboard mostra estatisticas por grupo:
+
+```json
+{
+  "gruposResumo": [
+    {
+      "id": "uuid",
+      "nome": "Promocoes Diarias",
+      "totalEnvios": 150,
+      "enviosHoje": 12
+    }
+  ]
+}
+```
+
+<Card title="API Grupos" icon="users" href="/api-reference/whatsapp/get-groups">
+  Veja a referencia completa da API de Grupos
+</Card>

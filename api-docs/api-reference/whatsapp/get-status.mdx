@@ -1,0 +1,24 @@
+---
+title: "Status da Conexao"
+api: "GET /whatsapp/status"
+description: "Retorna o status atual da conexao com WhatsApp"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/whatsapp/status
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "status": "connected",
+  "instanceName": "minha_instancia"
+}
+```
+
+</ResponseExample>

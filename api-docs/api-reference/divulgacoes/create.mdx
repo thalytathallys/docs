@@ -1,0 +1,77 @@
+---
+title: "Criar Divulgacao"
+api: "POST /divulgacoes"
+description: "Cria uma nova divulgacao de produto"
+---
+
+<ParamField body="produtoNome" type="string" required>
+  Nome do produto
+</ParamField>
+
+<ParamField body="produtoPreco" type="number" required>
+  Preco do produto
+</ParamField>
+
+<ParamField body="produtoDesconto" type="number">
+  Percentual de desconto
+</ParamField>
+
+<ParamField body="produtoImagem" type="string" required>
+  URL da imagem do produto
+</ParamField>
+
+<ParamField body="produtoLink" type="string" required>
+  Link de afiliado
+</ParamField>
+
+<ParamField body="comissao" type="number">
+  Taxa de comissao (%)
+</ParamField>
+
+<ParamField body="textoFinal" type="string" required>
+  Texto da mensagem renderizada
+</ParamField>
+
+<ParamField body="templateId" type="string">
+  ID do template usado
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/divulgacoes \
+  -H "Content-Type: application/json" \
+  -d '{
+    "produtoNome": "Fone Bluetooth TWS Pro",
+    "produtoPreco": 49.90,
+    "produtoDesconto": 30,
+    "produtoImagem": "https://cf.shopee.com.br/...",
+    "produtoLink": "https://shope.ee/...",
+    "comissao": 8.5,
+    "textoFinal": "Oferta imperdivel!\n\nFone Bluetooth TWS Pro\n\nPor apenas: R$ 49,90\nDesconto: 30%\n\nCompre aqui: https://shope.ee/..."
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "divulgacao": {
+    "id": "clx1234567890",
+    "produtoNome": "Fone Bluetooth TWS Pro",
+    "produtoPreco": 49.90,
+    "produtoDesconto": 30,
+    "produtoImagem": "https://cf.shopee.com.br/...",
+    "produtoLink": "https://shope.ee/...",
+    "comissao": 8.5,
+    "textoFinal": "Oferta imperdivel!...",
+    "status": "rascunho",
+    "createdAt": "2024-01-15T10:00:00Z",
+    "updatedAt": "2024-01-15T10:00:00Z"
+  }
+}
+```
+
+</ResponseExample>

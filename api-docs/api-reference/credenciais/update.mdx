@@ -1,0 +1,30 @@
+---
+title: "Atualizar Credenciais"
+api: "PUT /credenciais"
+description: "Atualiza credenciais de Shopee, Evolution API ou LLM"
+---
+
+<ParamField body="shopeeAppId" type="string">App ID da Shopee</ParamField>
+<ParamField body="shopeeSecret" type="string">Secret da Shopee</ParamField>
+<ParamField body="evolutionApiUrl" type="string">URL da Evolution API</ParamField>
+<ParamField body="evolutionInstanceName" type="string">Nome da instancia</ParamField>
+<ParamField body="evolutionApiKey" type="string">Token da Evolution</ParamField>
+<ParamField body="llmProvider" type="string">Provedor LLM (openai, google)</ParamField>
+<ParamField body="llmModel" type="string">Modelo (gpt-4o-mini, gemini-pro)</ParamField>
+<ParamField body="llmApiKey" type="string">Chave da API LLM</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X PUT http://localhost:3000/api/credenciais \
+  -H "Content-Type: application/json" \
+  -d '{
+    "shopeeAppId": "123456",
+    "shopeeSecret": "abc123...",
+    "evolutionApiUrl": "https://evolution.example.com",
+    "evolutionInstanceName": "minha_instancia",
+    "evolutionApiKey": "token123..."
+  }'
+```
+
+</RequestExample>

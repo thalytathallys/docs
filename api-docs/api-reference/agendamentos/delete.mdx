@@ -1,0 +1,27 @@
+---
+title: "Cancelar Agendamento"
+api: "DELETE /agendamentos/{id}"
+description: "Cancela um agendamento pendente"
+---
+
+<ParamField path="id" type="string" required>
+  ID do agendamento
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X DELETE http://localhost:3000/api/agendamentos/clx1234567890
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "ok": true
+}
+```
+
+</ResponseExample>

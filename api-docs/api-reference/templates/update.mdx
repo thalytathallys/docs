@@ -1,0 +1,33 @@
+---
+title: "Atualizar Template"
+api: "PUT /templates/{id}"
+description: "Atualiza um template existente"
+---
+
+<ParamField path="id" type="string" required>
+  ID do template
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X PUT http://localhost:3000/api/templates/clx123 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Novo Nome",
+    "conteudo": "{gancho}\n\n{nome}\n{preco}",
+    "isDefault": true
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "template": { ... }
+}
+```
+
+</ResponseExample>

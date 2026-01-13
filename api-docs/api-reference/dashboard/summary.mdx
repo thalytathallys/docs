@@ -1,0 +1,34 @@
+---
+title: "Resumo do Dashboard"
+api: "GET /dashboard/summary"
+description: "Retorna metricas resumidas para o dashboard"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/dashboard/summary
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "enviosHoje": 45,
+  "filaPendente": 3,
+  "gruposAtivos": 12,
+  "whatsappStatus": "connected",
+  "gruposResumo": [
+    {
+      "id": "clx123",
+      "nome": "Promocoes Diarias",
+      "totalEnvios": 150,
+      "enviosHoje": 15
+    }
+  ]
+}
+```
+
+</ResponseExample>

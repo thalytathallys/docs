@@ -1,0 +1,40 @@
+---
+title: "Obter Credenciais"
+api: "GET /credenciais"
+description: "Retorna snapshot das credenciais configuradas"
+---
+
+<Note>
+Os valores sensiveis sao mascarados. Apenas indica se estao configurados.
+</Note>
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/credenciais
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "shopee": {
+    "configured": true,
+    "appId": "123***"
+  },
+  "evolution": {
+    "configured": true,
+    "apiUrl": "https://...",
+    "instanceName": "minha_instancia"
+  },
+  "llm": {
+    "configured": true,
+    "provider": "openai",
+    "model": "gpt-4o-mini"
+  }
+}
+```
+
+</ResponseExample>

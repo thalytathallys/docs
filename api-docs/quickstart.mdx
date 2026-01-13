@@ -1,0 +1,111 @@
+---
+title: "Quickstart"
+description: "Comece a usar a API Divulga Shopee em poucos minutos"
+---
+
+# Quickstart
+
+Este guia mostra como configurar e usar a API Divulga Shopee.
+
+## Pre-requisitos
+
+- Node.js 18+
+- PostgreSQL (ou conta Supabase)
+- Conta de afiliado Shopee
+- Instancia Evolution API configurada
+
+## 1. Configurar Credenciais
+
+Primeiro, configure suas credenciais usando a API:
+
+```bash
+curl -X PUT http://localhost:3000/api/credenciais \
+  -H "Content-Type: application/json" \
+  -d '{
+    "shopeeAppId": "seu_app_id",
+    "shopeeSecret": "seu_secret",
+    "evolutionApiUrl": "https://sua-evolution.com",
+    "evolutionInstanceName": "sua_instancia",
+    "evolutionApiKey": "seu_token"
+  }'
+```
+
+## 2. Conectar WhatsApp
+
+Obtenha o QR code para conectar sua instancia:
+
+```bash
+curl -X POST http://localhost:3000/api/whatsapp/connect
+```
+
+Escaneie o QR code retornado com seu WhatsApp.
+
+## 3. Listar Grupos
+
+Apos conectar, liste seus grupos:
+
+```bash
+curl http://localhost:3000/api/whatsapp/grupos
+```
+
+## 4. Buscar Produtos
+
+Busque produtos na Shopee:
+
+```bash
+curl -X POST http://localhost:3000/api/shopee/produtos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "keyword": "fone bluetooth",
+    "minCommission": 5,
+    "minDiscount": 20
+  }'
+```
+
+## 5. Criar Divulgacao
+
+Crie uma divulgacao com um produto:
+
+```bash
+curl -X POST http://localhost:3000/api/divulgacoes \
+  -H "Content-Type: application/json" \
+  -d '{
+    "produtoNome": "Fone Bluetooth TWS",
+    "produtoPreco": 49.90,
+    "produtoDesconto": 30,
+    "produtoImagem": "https://...",
+    "produtoLink": "https://shope.ee/...",
+    "textoFinal": "Fone Bluetooth em promocao! Apenas R$ 49,90"
+  }'
+```
+
+## 6. Agendar Envio
+
+Agende a divulgacao para os grupos:
+
+```bash
+curl -X POST http://localhost:3000/api/agendamentos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "divulgacaoId": "id_da_divulgacao",
+    "dataHora": "2024-01-15T14:00:00Z",
+    "grupos": [
+      { "id": "120363...@g.us", "nome": "Grupo Promocoes" }
+    ]
+  }'
+```
+
+<Note>
+Se `dataHora` for omitido ou nulo, o envio sera imediato.
+</Note>
+
+## Proximos Passos
+
+<CardGroup cols={2}>
+  <Card title="Templates" icon="file-lines" href="/concepts/templates">
+    Aprenda a personalizar suas mensagens
+  </Card>
+  <Card title="Automacao" icon="robot" href="/concepts/automacao">
+    Configure envios automaticos
+  </Card>
+</CardGroup>

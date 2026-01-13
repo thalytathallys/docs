@@ -1,0 +1,23 @@
+---
+title: "Criar Template Visual"
+api: "POST /templates-visual"
+description: "Cria um novo template visual"
+---
+
+<ParamField body="nome" type="string" required>Nome</ParamField>
+<ParamField body="layout" type="string">Layout</ParamField>
+<ParamField body="corFundo" type="string">Cor de fundo (hex)</ParamField>
+<ParamField body="corTexto" type="string">Cor do texto</ParamField>
+<ParamField body="corPreco" type="string">Cor do preco</ParamField>
+<ParamField body="corBotao" type="string">Cor do botao</ParamField>
+<ParamField body="isDefault" type="boolean">Padrao</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/templates-visual \
+  -H "Content-Type: application/json" \
+  -d '{"nome": "Tema Azul", "corFundo": "#0000FF"}'
+```
+
+</RequestExample>

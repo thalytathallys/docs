@@ -1,0 +1,41 @@
+---
+title: "Enviar Mensagem"
+api: "POST /whatsapp/enviar"
+description: "Envia uma mensagem para um grupo especifico"
+---
+
+<ParamField body="grupoId" type="string" required>
+  JID do grupo destino
+</ParamField>
+
+<ParamField body="texto" type="string" required>
+  Texto da mensagem
+</ParamField>
+
+<ParamField body="imagemUrl" type="string">
+  URL da imagem (opcional)
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/whatsapp/enviar \
+  -H "Content-Type: application/json" \
+  -d '{
+    "grupoId": "120363295648424210@g.us",
+    "texto": "Confira essa oferta!",
+    "imagemUrl": "https://cf.shopee.com.br/..."
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "success": true
+}
+```
+
+</ResponseExample>

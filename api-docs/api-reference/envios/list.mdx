@@ -1,0 +1,39 @@
+---
+title: "Listar Envios"
+api: "GET /envios"
+description: "Lista os ultimos 50 envios com detalhes"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/envios
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "envios": [
+    {
+      "id": "clx123",
+      "status": "enviado",
+      "erro": null,
+      "enviadoEm": "2024-01-15T14:30:00Z",
+      "createdAt": "2024-01-15T14:00:00Z",
+      "grupo": {
+        "id": "120363...@g.us",
+        "subject": "Promocoes Diarias"
+      },
+      "divulgacao": {
+        "id": "clx456",
+        "produtoNome": "Fone Bluetooth"
+      }
+    }
+  ]
+}
+```
+
+</ResponseExample>

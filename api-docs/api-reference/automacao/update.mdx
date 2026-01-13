@@ -1,0 +1,36 @@
+---
+title: "Atualizar Configuracao"
+api: "PUT /automacao"
+description: "Atualiza configuracao da automacao"
+---
+
+<ParamField body="isActive" type="boolean">Ativar/desativar</ParamField>
+<ParamField body="palavrasChave" type="array">Keywords de busca</ParamField>
+<ParamField body="descontoMinimo" type="number">Desconto minimo (%)</ParamField>
+<ParamField body="comissaoMinima" type="number">Comissao minima (%)</ParamField>
+<ParamField body="horarioInicio" type="string" required>Inicio (HH:mm)</ParamField>
+<ParamField body="horarioFim" type="string" required>Fim (HH:mm)</ParamField>
+<ParamField body="diasSemana" type="array">Dias ativos (0-6)</ParamField>
+<ParamField body="intervaloMinutos" type="integer" required>Intervalo entre envios</ParamField>
+<ParamField body="limiteDiario" type="integer" required>Limite diario</ParamField>
+<ParamField body="gruposIds" type="array">IDs dos grupos</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X PUT http://localhost:3000/api/automacao \
+  -H "Content-Type: application/json" \
+  -d '{
+    "isActive": true,
+    "palavrasChave": ["smartphone"],
+    "descontoMinimo": 30,
+    "horarioInicio": "09:00",
+    "horarioFim": "21:00",
+    "diasSemana": [1, 2, 3, 4, 5],
+    "intervaloMinutos": 60,
+    "limiteDiario": 15,
+    "gruposIds": ["120363...@g.us"]
+  }'
+```
+
+</RequestExample>

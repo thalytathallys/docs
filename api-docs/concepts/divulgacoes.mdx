@@ -1,0 +1,139 @@
+---
+title: "Divulgacoes"
+description: "Entenda como funcionam as divulgacoes de produtos"
+---
+
+# Divulgacoes
+
+Uma **divulgacao** representa um produto que sera enviado para grupos de WhatsApp.
+
+## Ciclo de Vida
+
+```
+rascunho → agendada → enviando → enviada
+                         ↓
+                       erro
+```
+
+### Status
+
+| Status | Descricao |
+|--------|-----------|
+| `rascunho` | Divulgacao criada, aguardando agendamento |
+| `agendada` | Agendamento criado, aguardando horario |
+| `enviando` | Envios em processamento |
+| `enviada` | Todos os envios concluidos |
+| `erro` | Um ou mais envios falharam |
+
+## Estrutura
+
+Uma divulgacao contem:
+
+```json
+{
+  "id": "uuid",
+  "produtoNome": "Fone Bluetooth TWS",
+  "produtoPreco": 49.90,
+  "produtoDesconto": 30,
+  "produtoImagem": "https://...",
+  "produtoLink": "https://shope.ee/...",
+  "comissao": 5.5,
+  "textoFinal": "Mensagem renderizada",
+  "status": "rascunho",
+  "templateId": "uuid-do-template"
+}
+```
+
+## Criar uma Divulgacao
+
+### 1. Buscar Produto
+
+Primeiro, busque um produto na Shopee:
+
+```bash
+curl -X POST /api/shopee/produtos \
+  -d '{"keyword": "fone bluetooth", "minCommission": 5}'
+```
+
+### 2. Gerar Gancho (Opcional)
+
+Gere uma frase de gancho com IA:
+
+```bash
+curl -X POST /api/ai/gancho \
+  -d '{
+    "productName": "Fone Bluetooth TWS",
+    "price": 49.90,
+    "discount": 30
+  }'
+```
+
+### 3. Renderizar Template
+
+Use um template para montar a mensagem final. Variaveis disponiveis:
+
+| Variavel | Descricao |
+|----------|-----------|
+| `{nome}` | Nome do produto |
+| `{preco}` | Preco formatado (R$ XX,XX) |
+| `{preco_original}` | Preco original antes do desconto |
+| `{desconto}` | Percentual de desconto |
+| `{link}` | Link de afiliado |
+| `{loja}` | Nome da loja |
+| `{avaliacao}` | Nota do produto (estrelas) |
+| `{vendas}` | Quantidade vendida |
+| `{comissao}` | Taxa de comissao (%) |
+| `{gancho}` | Frase gerada por IA |
+| `{emoji_titulo}` | Emoji do titulo |
+| `{emoji_preco}` | Emoji do preco |
+| `{emoji_link}` | Emoji do link |
+| `{emoji_desconto}` | Emoji do desconto |
+
+### 4. Criar Divulgacao
+
+```bash
+curl -X POST /api/divulgacoes \
+  -d '{
+    "produtoNome": "Fone Bluetooth TWS",
+    "produtoPreco": 49.90,
+    "produtoDesconto": 30,
+    "produtoImagem": "https://...",
+    "produtoLink": "https://shope.ee/...",
+    "comissao": 5.5,
+    "textoFinal": "Mensagem renderizada completa"
+  }'
+```
+
+### 5. Agendar Envio
+
+Agende para grupos especificos:
+
+```bash
+curl -X POST /api/agendamentos \
+  -d '{
+    "divulgacaoId": "uuid-da-divulgacao",
+    "dataHora": "2024-01-15T14:00:00Z",
+    "grupos": [
+      {"id": "120363...@g.us", "nome": "Grupo 1"}
+    ]
+  }'
+```
+
+## Monitorar Envios
+
+Cada divulgacao tem um resumo de envios:
+
+```json
+{
+  "resumo": {
+    "total": 10,
+    "enviados": 8,
+    "pendentes": 1,
+    "erros": 1
+  }
+}
+```
+
+<Tip>
+Use o endpoint `GET /api/divulgacoes` com filtros para monitorar o status das suas divulgacoes.
+</Tip>

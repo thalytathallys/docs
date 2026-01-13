@@ -1,0 +1,25 @@
+---
+title: "Listar Colecoes"
+api: "GET /colecoes"
+description: "Lista todas as colecoes de grupos"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/colecoes
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "colecoes": [
+    {"id": "clx123", "nome": "Grupos Premium", "createdAt": "..."}
+  ]
+}
+```
+
+</ResponseExample>

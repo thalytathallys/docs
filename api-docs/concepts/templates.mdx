@@ -1,0 +1,102 @@
+---
+title: "Templates"
+description: "Como usar templates para personalizar mensagens"
+---
+
+# Templates
+
+Templates permitem personalizar as mensagens enviadas aos grupos de WhatsApp.
+
+## Sistema de Variaveis
+
+O template usa um sistema de variaveis com a sintaxe `{variavel}`:
+
+```
+{gancho}
+
+{emoji_titulo} {nome}
+
+{emoji_preco} Por apenas: {preco}
+{emoji_desconto} Desconto: {desconto}%
+
+{emoji_link} Compre aqui: {link}
+```
+
+## Variaveis Disponiveis
+
+### Produto
+
+| Variavel | Exemplo | Descricao |
+|----------|---------|-----------|
+| `{nome}` | Fone Bluetooth TWS | Nome do produto |
+| `{preco}` | R$ 49,90 | Preco formatado |
+| `{preco_original}` | R$ 69,90 | Preco antes do desconto |
+| `{desconto}` | 30 | Percentual de desconto |
+| `{link}` | https://shope.ee/... | Link de afiliado |
+| `{loja}` | TechStore | Nome da loja |
+| `{avaliacao}` | 4.8 | Nota do produto |
+| `{vendas}` | 1.5k | Quantidade vendida |
+| `{comissao}` | 5.5 | Taxa de comissao (%) |
+
+### IA
+
+| Variavel | Exemplo | Descricao |
+|----------|---------|-----------|
+| `{gancho}` | Oferta imperdivel! | Frase gerada por IA |
+
+### Emojis
+
+| Variavel | Valor padrao | Descricao |
+|----------|--------------|-----------|
+| `{emoji_titulo}` | - | Emoji antes do titulo |
+| `{emoji_preco}` | - | Emoji antes do preco |
+| `{emoji_link}` | - | Emoji antes do link |
+| `{emoji_desconto}` | - | Emoji antes do desconto |
+
+## Criar Template
+
+```bash
+curl -X POST /api/templates \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nome": "Template Promocao",
+    "conteudo": "{gancho}\n\n{emoji_titulo} {nome}\n\n{emoji_preco} Por: {preco}\n{emoji_desconto} Economia de {desconto}%\n\n{emoji_link} {link}",
+    "isDefault": false,
+    "emojiTitulo": "",
+    "emojiPreco": "",
+    "emojiLink": "",
+    "emojiDesconto": ""
+  }'
+```
+
+## Template Padrao
+
+Voce pode definir um template como padrao. Quando `isDefault: true`, esse template sera usado automaticamente nas novas divulgacoes:
+
+```bash
+curl -X PUT /api/templates/{id} \
+  -d '{"isDefault": true}'
+```
+
+<Note>
+Ao definir um template como padrao, todos os outros templates terao `isDefault` definido como `false` automaticamente.
+</Note>
+
+## Templates Visuais
+
+Alem dos templates de texto, existem **Templates Visuais** para customizar a aparencia de imagens geradas:
+
+```json
+{
+  "nome": "Tema Vermelho",
+  "layout": "card",
+  "corFundo": "#FF0000",
+  "corTexto": "#FFFFFF",
+  "corPreco": "#FFFF00",
+  "corBotao": "#000000"
+}
+```
+
+<Card title="API Templates" icon="code" href="/api-reference/templates/list">
+  Veja a referencia completa da API de Templates
+</Card>

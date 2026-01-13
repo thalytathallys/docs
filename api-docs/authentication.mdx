@@ -1,0 +1,118 @@
+---
+title: "Autenticacao"
+description: "Como autenticar nas APIs externas"
+---
+
+# Autenticacao
+
+A API Divulga Shopee integra com duas APIs externas que requerem autenticacao.
+
+## Shopee Affiliate API
+
+A API de afiliados da Shopee usa autenticacao por assinatura SHA256.
+
+### Parametros Necessarios
+
+| Parametro | Descricao |
+|-----------|-----------|
+| `appId` | ID do aplicativo fornecido pela Shopee |
+| `secret` | Chave secreta para gerar assinatura |
+
+### Como Funciona
+
+1. Concatene: `appId + timestamp + payload + secret`
+2. Gere hash SHA256 do resultado
+3. Envie no header da requisicao
+
+<Note>
+A assinatura e gerada automaticamente pelo cliente Shopee interno. Voce so precisa configurar o `appId` e `secret` nas credenciais.
+</Note>
+
+### Configurar Credenciais Shopee
+
+```bash
+curl -X PUT http://localhost:3000/api/credenciais \
+  -H "Content-Type: application/json" \
+  -d '{
+    "shopeeAppId": "seu_app_id",
+    "shopeeSecret": "seu_secret"
+  }'
+```
+
+## Evolution API (WhatsApp)
+
+A Evolution API usa autenticacao por API Key no header.
+
+### Parametros Necessarios
+
+| Parametro | Descricao |
+|-----------|-----------|
+| `apiUrl` | URL base da sua instancia Evolution |
+| `instanceName` | Nome da instancia WhatsApp |
+| `apiKey` | Token de autenticacao |
+
+### Configurar Credenciais Evolution
+
+```bash
+curl -X PUT http://localhost:3000/api/credenciais \
+  -H "Content-Type: application/json" \
+  -d '{
+    "evolutionApiUrl": "https://sua-evolution.com",
+    "evolutionInstanceName": "minha_instancia",
+    "evolutionApiKey": "seu_token_secreto"
+  }'
+```
+
+## LLM (Geracao de Ganchos)
+
+Para usar a geracao de ganchos por IA, configure um provedor LLM.
+
+### Provedores Suportados
+
+- **OpenAI**: `gpt-4o-mini`, `gpt-4o`, `gpt-4-turbo`
+- **Google**: `gemini-pro`, `gemini-1.5-flash`
+
+### Configurar LLM
+
+```bash
+curl -X PUT http://localhost:3000/api/credenciais \
+  -H "Content-Type: application/json" \
+  -d '{
+    "llmProvider": "openai",
+    "llmModel": "gpt-4o-mini",
+    "llmApiKey": "sk-..."
+  }'
+```
+
+## Verificar Configuracao
+
+Para verificar se as credenciais estao configuradas:
+
+```bash
+curl http://localhost:3000/api/credenciais
+```
+
+Resposta:
+
+```json
+{
+  "shopee": {
+    "configured": true,
+    "appId": "123***"
+  },
+  "evolution": {
+    "configured": true,
+    "apiUrl": "https://...",
+    "instanceName": "minha_instancia"
+  },
+  "llm": {
+    "configured": true,
+    "provider": "openai",
+    "model": "gpt-4o-mini"
+  }
+}
+```
+
+<Warning>
+As credenciais sao armazenadas de forma criptografada no banco de dados. Os valores sensiveis nunca sao retornados em texto plano.
+</Warning>

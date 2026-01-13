@@ -1,0 +1,1652 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Divulga Shopee API",
+    "description": "API de automacao para afiliados Shopee divulgarem produtos em grupos de WhatsApp",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Divulga Shopee",
+      "url": "https://github.com/seu-usuario/divulga-shopee"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Desenvolvimento local"
+    }
+  ],
+  "tags": [
+    { "name": "Shopee", "description": "Endpoints para busca de produtos na Shopee" },
+    { "name": "WhatsApp", "description": "Endpoints para gerenciamento de grupos e envio de mensagens" },
+    { "name": "Divulgacoes", "description": "Endpoints para gerenciamento de divulgacoes de produtos" },
+    { "name": "Agendamentos", "description": "Endpoints para agendamento de envios" },
+    { "name": "Templates", "description": "Endpoints para gerenciamento de templates de mensagem" },
+    { "name": "Templates Visuais", "description": "Endpoints para templates visuais com cores e layout" },
+    { "name": "Favoritos", "description": "Endpoints para produtos favoritos" },
+    { "name": "Colecoes", "description": "Endpoints para colecoes de grupos" },
+    { "name": "Automacao", "description": "Endpoints para configuracao de automacao" },
+    { "name": "Dashboard", "description": "Endpoints para metricas do dashboard" },
+    { "name": "AI", "description": "Endpoints para geracao de conteudo com IA" },
+    { "name": "Credenciais", "description": "Endpoints para gerenciamento de credenciais" },
+    { "name": "Envios", "description": "Endpoints para gerenciamento de envios" }
+  ],
+  "paths": {
+    "/shopee/produtos": {
+      "post": {
+        "operationId": "searchProducts",
+        "tags": ["Shopee"],
+        "summary": "Buscar produtos",
+        "description": "Busca produtos na API de afiliados da Shopee com filtros opcionais",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShopeeSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lista de produtos encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShopeeSearchResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validacao",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whatsapp/grupos": {
+      "get": {
+        "operationId": "getGroups",
+        "tags": ["WhatsApp"],
+        "summary": "Listar grupos",
+        "description": "Lista todos os grupos de WhatsApp conectados a instancia",
+        "responses": {
+          "200": {
+            "description": "Lista de grupos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhatsAppGroupsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "updateGroups",
+        "tags": ["WhatsApp"],
+        "summary": "Atualizar grupos",
+        "description": "Atualiza as configuracoes dos grupos (ativacao e colecao)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroupsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Grupos atualizados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whatsapp/status": {
+      "get": {
+        "operationId": "getWhatsAppStatus",
+        "tags": ["WhatsApp"],
+        "summary": "Status da conexao",
+        "description": "Retorna o status atual da conexao com WhatsApp",
+        "responses": {
+          "200": {
+            "description": "Status da conexao",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhatsAppStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whatsapp/connect": {
+      "post": {
+        "operationId": "connectWhatsApp",
+        "tags": ["WhatsApp"],
+        "summary": "Conectar WhatsApp",
+        "description": "Inicia a conexao com a instancia do WhatsApp",
+        "responses": {
+          "200": {
+            "description": "QR Code ou status de conexao",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhatsAppConnectResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whatsapp/enviar": {
+      "post": {
+        "operationId": "sendMessage",
+        "tags": ["WhatsApp"],
+        "summary": "Enviar mensagem",
+        "description": "Envia uma mensagem para um grupo especifico",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMessageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mensagem enviada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/divulgacoes": {
+      "get": {
+        "operationId": "listDivulgacoes",
+        "tags": ["Divulgacoes"],
+        "summary": "Listar divulgacoes",
+        "description": "Lista divulgacoes com filtros e paginacao",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Texto de busca no nome do produto",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filtrar por status",
+            "schema": {
+              "type": "string",
+              "enum": ["rascunho", "agendada", "enviando", "enviada", "erro"]
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Data inicial (ISO 8601)",
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "Data final (ISO 8601)",
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Numero da pagina",
+            "schema": { "type": "integer", "default": 1, "minimum": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Itens por pagina",
+            "schema": { "type": "integer", "default": 20, "minimum": 1, "maximum": 100 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de divulgacoes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DivulgacoesListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createDivulgacao",
+        "tags": ["Divulgacoes"],
+        "summary": "Criar divulgacao",
+        "description": "Cria uma nova divulgacao de produto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDivulgacaoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Divulgacao criada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DivulgacaoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agendamentos": {
+      "get": {
+        "operationId": "listAgendamentos",
+        "tags": ["Agendamentos"],
+        "summary": "Listar agendamentos",
+        "description": "Lista agendamentos com filtros e paginacao",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filtrar por status",
+            "schema": {
+              "type": "string",
+              "enum": ["pendente", "processando", "concluido", "erro"]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 20 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de agendamentos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgendamentosListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAgendamento",
+        "tags": ["Agendamentos"],
+        "summary": "Criar agendamento",
+        "description": "Agenda uma divulgacao para envio. Se dataHora nao for informado, o envio e imediato.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAgendamentoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Agendamento criado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgendamentoResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Agendamento ja existe para esta divulgacao"
+          }
+        }
+      }
+    },
+    "/agendamentos/{id}": {
+      "get": {
+        "operationId": "getAgendamento",
+        "tags": ["Agendamentos"],
+        "summary": "Obter agendamento",
+        "description": "Retorna detalhes de um agendamento especifico",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do agendamento",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgendamentoResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Agendamento nao encontrado" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteAgendamento",
+        "tags": ["Agendamentos"],
+        "summary": "Cancelar agendamento",
+        "description": "Cancela um agendamento pendente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Agendamento cancelado" },
+          "404": { "description": "Agendamento nao encontrado" }
+        }
+      }
+    },
+    "/templates": {
+      "get": {
+        "operationId": "listTemplates",
+        "tags": ["Templates"],
+        "summary": "Listar templates",
+        "description": "Lista todos os templates de mensagem",
+        "responses": {
+          "200": {
+            "description": "Lista de templates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplatesListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTemplate",
+        "tags": ["Templates"],
+        "summary": "Criar template",
+        "description": "Cria um novo template de mensagem",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Template criado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/templates/{id}": {
+      "get": {
+        "operationId": "getTemplate",
+        "tags": ["Templates"],
+        "summary": "Obter template",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do template",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateTemplate",
+        "tags": ["Templates"],
+        "summary": "Atualizar template",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Template atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTemplate",
+        "tags": ["Templates"],
+        "summary": "Excluir template",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Template excluido" }
+        }
+      }
+    },
+    "/templates-visual": {
+      "get": {
+        "operationId": "listTemplatesVisual",
+        "tags": ["Templates Visuais"],
+        "summary": "Listar templates visuais",
+        "responses": {
+          "200": {
+            "description": "Lista de templates visuais",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplatesVisualListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createTemplateVisual",
+        "tags": ["Templates Visuais"],
+        "summary": "Criar template visual",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateVisualRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Template visual criado"
+          }
+        }
+      }
+    },
+    "/templates-visual/{id}": {
+      "get": {
+        "operationId": "getTemplateVisual",
+        "tags": ["Templates Visuais"],
+        "summary": "Obter template visual",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Detalhes do template visual" }
+        }
+      },
+      "put": {
+        "operationId": "updateTemplateVisual",
+        "tags": ["Templates Visuais"],
+        "summary": "Atualizar template visual",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTemplateVisualRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Template visual atualizado" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteTemplateVisual",
+        "tags": ["Templates Visuais"],
+        "summary": "Excluir template visual",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Template visual excluido" }
+        }
+      }
+    },
+    "/favoritos": {
+      "get": {
+        "operationId": "listFavoritos",
+        "tags": ["Favoritos"],
+        "summary": "Listar favoritos",
+        "description": "Lista todos os produtos favoritados",
+        "responses": {
+          "200": {
+            "description": "Lista de favoritos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavoritosListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createFavorito",
+        "tags": ["Favoritos"],
+        "summary": "Adicionar favorito",
+        "description": "Adiciona um produto aos favoritos (upsert por itemId+shopId)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFavoritoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Favorito criado ou atualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavoritoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favoritos/{id}": {
+      "delete": {
+        "operationId": "deleteFavorito",
+        "tags": ["Favoritos"],
+        "summary": "Remover favorito",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Favorito removido" }
+        }
+      }
+    },
+    "/colecoes": {
+      "get": {
+        "operationId": "listColecoes",
+        "tags": ["Colecoes"],
+        "summary": "Listar colecoes",
+        "description": "Lista todas as colecoes de grupos",
+        "responses": {
+          "200": {
+            "description": "Lista de colecoes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColecoesListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createColecao",
+        "tags": ["Colecoes"],
+        "summary": "Criar colecao",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateColecaoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Colecao criada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ColecaoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/colecoes/{id}": {
+      "get": {
+        "operationId": "getColecao",
+        "tags": ["Colecoes"],
+        "summary": "Obter colecao",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Detalhes da colecao" }
+        }
+      },
+      "put": {
+        "operationId": "updateColecao",
+        "tags": ["Colecoes"],
+        "summary": "Atualizar colecao",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateColecaoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Colecao atualizada" }
+        }
+      },
+      "delete": {
+        "operationId": "deleteColecao",
+        "tags": ["Colecoes"],
+        "summary": "Excluir colecao",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Colecao excluida" }
+        }
+      }
+    },
+    "/automacao": {
+      "get": {
+        "operationId": "getAutomacao",
+        "tags": ["Automacao"],
+        "summary": "Obter configuracao",
+        "description": "Retorna a configuracao atual da automacao, grupos ativos e logs recentes",
+        "responses": {
+          "200": {
+            "description": "Configuracao da automacao",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AutomacaoResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateAutomacao",
+        "tags": ["Automacao"],
+        "summary": "Atualizar configuracao",
+        "description": "Atualiza a configuracao da automacao",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAutomacaoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Configuracao atualizada"
+          }
+        }
+      }
+    },
+    "/automacao/run": {
+      "post": {
+        "operationId": "runAutomacao",
+        "tags": ["Automacao"],
+        "summary": "Executar automacao",
+        "description": "Executa a automacao manualmente uma vez",
+        "responses": {
+          "200": {
+            "description": "Automacao executada"
+          }
+        }
+      }
+    },
+    "/dashboard/summary": {
+      "get": {
+        "operationId": "getDashboardSummary",
+        "tags": ["Dashboard"],
+        "summary": "Resumo do dashboard",
+        "description": "Retorna metricas resumidas para o dashboard",
+        "responses": {
+          "200": {
+            "description": "Metricas do dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardSummaryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/gancho": {
+      "post": {
+        "operationId": "generateGancho",
+        "tags": ["AI"],
+        "summary": "Gerar gancho",
+        "description": "Gera uma frase de gancho usando IA para atrair atencao no produto",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateGanchoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Gancho gerado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateGanchoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/credenciais": {
+      "get": {
+        "operationId": "getCredenciais",
+        "tags": ["Credenciais"],
+        "summary": "Obter credenciais",
+        "description": "Retorna um snapshot das credenciais configuradas (valores mascarados)",
+        "responses": {
+          "200": {
+            "description": "Snapshot de credenciais",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CredenciaisResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateCredenciais",
+        "tags": ["Credenciais"],
+        "summary": "Atualizar credenciais",
+        "description": "Atualiza credenciais de Shopee, Evolution API ou LLM",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCredenciaisRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Credenciais atualizadas"
+          }
+        }
+      }
+    },
+    "/envios": {
+      "get": {
+        "operationId": "listEnvios",
+        "tags": ["Envios"],
+        "summary": "Listar envios",
+        "description": "Lista os ultimos 50 envios com detalhes",
+        "responses": {
+          "200": {
+            "description": "Lista de envios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnviosListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/envios/{id}": {
+      "get": {
+        "operationId": "getEnvio",
+        "tags": ["Envios"],
+        "summary": "Obter envio",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Detalhes do envio" }
+        }
+      },
+      "post": {
+        "operationId": "retryEnvio",
+        "tags": ["Envios"],
+        "summary": "Retentar envio",
+        "description": "Retenta um envio que falhou",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Envio retentado" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" },
+          "details": {
+            "type": "object",
+            "properties": {
+              "fieldErrors": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ShopeeSearchRequest": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100,
+            "description": "Palavra-chave de busca"
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 1
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "default": 20
+          },
+          "sortType": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "description": "Tipo de ordenacao (1-5)"
+          },
+          "minCommission": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Comissao minima (%)"
+          },
+          "minDiscount": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Desconto minimo (%)"
+          }
+        }
+      },
+      "ShopeeSearchResponse": {
+        "type": "object",
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShopeeProduct"
+            }
+          }
+        }
+      },
+      "ShopeeProduct": {
+        "type": "object",
+        "properties": {
+          "itemId": { "type": "string" },
+          "shopId": { "type": "string" },
+          "productName": { "type": "string" },
+          "price": { "type": "number" },
+          "priceMin": { "type": "number" },
+          "priceMax": { "type": "number" },
+          "priceDiscountRate": { "type": "number" },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "commissionRate": { "type": "number" },
+          "commission": { "type": "number" },
+          "shopName": { "type": "string" },
+          "sales": { "type": "integer" },
+          "ratingStar": { "type": "number" },
+          "productLink": { "type": "string", "format": "uri" },
+          "offerLink": { "type": "string", "format": "uri" }
+        }
+      },
+      "WhatsAppGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "grupos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WhatsAppGroup"
+            }
+          },
+          "instance": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "instanceName": { "type": "string" },
+              "status": { "type": "string" }
+            }
+          }
+        }
+      },
+      "WhatsAppGroup": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "JID do grupo (formato: {id}@g.us)" },
+          "subject": { "type": "string", "description": "Nome do grupo" },
+          "isActive": { "type": "boolean" },
+          "colecaoId": { "type": "string", "nullable": true },
+          "colecaoNome": { "type": "string", "nullable": true }
+        }
+      },
+      "UpdateGroupsRequest": {
+        "type": "object",
+        "properties": {
+          "grupos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "nome"],
+              "properties": {
+                "id": { "type": "string" },
+                "nome": { "type": "string" },
+                "colecaoId": { "type": "string", "nullable": true }
+              }
+            }
+          },
+          "selecionados": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "IDs dos grupos ativos"
+          }
+        }
+      },
+      "WhatsAppStatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["connected", "disconnected", "connecting"]
+          },
+          "instanceName": { "type": "string" }
+        }
+      },
+      "WhatsAppConnectResponse": {
+        "type": "object",
+        "properties": {
+          "qrcode": { "type": "string", "description": "QR Code em base64" },
+          "status": { "type": "string" }
+        }
+      },
+      "SendMessageRequest": {
+        "type": "object",
+        "required": ["grupoId", "texto"],
+        "properties": {
+          "grupoId": { "type": "string", "description": "JID do grupo" },
+          "texto": { "type": "string" },
+          "imagemUrl": { "type": "string", "format": "uri" }
+        }
+      },
+      "DivulgacoesListResponse": {
+        "type": "object",
+        "properties": {
+          "divulgacoes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Divulgacao"
+            }
+          },
+          "total": { "type": "integer" },
+          "page": { "type": "integer" },
+          "pageSize": { "type": "integer" },
+          "totalPages": { "type": "integer" }
+        }
+      },
+      "Divulgacao": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "produtoNome": { "type": "string" },
+          "produtoPreco": { "type": "number" },
+          "produtoDesconto": { "type": "number" },
+          "produtoImagem": { "type": "string", "format": "uri" },
+          "produtoLink": { "type": "string", "format": "uri" },
+          "comissao": { "type": "number" },
+          "textoFinal": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["rascunho", "agendada", "enviando", "enviada", "erro"]
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "resumo": {
+            "type": "object",
+            "properties": {
+              "total": { "type": "integer" },
+              "enviados": { "type": "integer" },
+              "pendentes": { "type": "integer" },
+              "erros": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "CreateDivulgacaoRequest": {
+        "type": "object",
+        "required": ["produtoNome", "produtoPreco", "produtoImagem", "produtoLink", "textoFinal"],
+        "properties": {
+          "produtoNome": { "type": "string", "minLength": 1 },
+          "produtoPreco": { "type": "number", "minimum": 0 },
+          "produtoDesconto": { "type": "number", "minimum": 0 },
+          "produtoImagem": { "type": "string", "format": "uri" },
+          "produtoLink": { "type": "string", "format": "uri" },
+          "comissao": { "type": "number", "minimum": 0 },
+          "textoFinal": { "type": "string", "minLength": 1 },
+          "templateId": { "type": "string" }
+        }
+      },
+      "DivulgacaoResponse": {
+        "type": "object",
+        "properties": {
+          "divulgacao": {
+            "$ref": "#/components/schemas/Divulgacao"
+          }
+        }
+      },
+      "AgendamentosListResponse": {
+        "type": "object",
+        "properties": {
+          "agendamentos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Agendamento"
+            }
+          },
+          "total": { "type": "integer" },
+          "page": { "type": "integer" },
+          "pageSize": { "type": "integer" },
+          "totalPages": { "type": "integer" }
+        }
+      },
+      "Agendamento": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dataHora": { "type": "string", "format": "date-time" },
+          "status": {
+            "type": "string",
+            "enum": ["pendente", "processando", "concluido", "erro"]
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "divulgacao": {
+            "$ref": "#/components/schemas/Divulgacao"
+          }
+        }
+      },
+      "CreateAgendamentoRequest": {
+        "type": "object",
+        "required": ["divulgacaoId", "grupos"],
+        "properties": {
+          "divulgacaoId": { "type": "string", "minLength": 1 },
+          "dataHora": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "Se nulo, envio imediato"
+          },
+          "grupos": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "nome"],
+              "properties": {
+                "id": { "type": "string" },
+                "nome": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "AgendamentoResponse": {
+        "type": "object",
+        "properties": {
+          "agendamento": {
+            "$ref": "#/components/schemas/Agendamento"
+          },
+          "immediate": {
+            "type": "boolean",
+            "description": "Se true, o envio foi iniciado imediatamente"
+          }
+        }
+      },
+      "TemplatesListResponse": {
+        "type": "object",
+        "properties": {
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Template"
+            }
+          }
+        }
+      },
+      "Template": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "nome": { "type": "string" },
+          "conteudo": { "type": "string" },
+          "isDefault": { "type": "boolean" },
+          "emojiTitulo": { "type": "string", "nullable": true },
+          "emojiPreco": { "type": "string", "nullable": true },
+          "emojiLink": { "type": "string", "nullable": true },
+          "emojiDesconto": { "type": "string", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CreateTemplateRequest": {
+        "type": "object",
+        "required": ["nome", "conteudo"],
+        "properties": {
+          "nome": { "type": "string", "minLength": 1 },
+          "conteudo": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Conteudo com variaveis: {nome}, {preco}, {link}, {desconto}, {gancho}, etc."
+          },
+          "isDefault": { "type": "boolean", "default": false },
+          "emojiTitulo": { "type": "string", "maxLength": 12, "nullable": true },
+          "emojiPreco": { "type": "string", "maxLength": 12, "nullable": true },
+          "emojiLink": { "type": "string", "maxLength": 12, "nullable": true },
+          "emojiDesconto": { "type": "string", "maxLength": 12, "nullable": true }
+        }
+      },
+      "TemplateResponse": {
+        "type": "object",
+        "properties": {
+          "template": {
+            "$ref": "#/components/schemas/Template"
+          }
+        }
+      },
+      "TemplatesVisualListResponse": {
+        "type": "object",
+        "properties": {
+          "templates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TemplateVisual"
+            }
+          }
+        }
+      },
+      "TemplateVisual": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "nome": { "type": "string" },
+          "layout": { "type": "string" },
+          "corFundo": { "type": "string" },
+          "corTexto": { "type": "string" },
+          "corPreco": { "type": "string" },
+          "corBotao": { "type": "string" },
+          "isDefault": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CreateTemplateVisualRequest": {
+        "type": "object",
+        "required": ["nome"],
+        "properties": {
+          "nome": { "type": "string" },
+          "layout": { "type": "string" },
+          "corFundo": { "type": "string" },
+          "corTexto": { "type": "string" },
+          "corPreco": { "type": "string" },
+          "corBotao": { "type": "string" },
+          "isDefault": { "type": "boolean" }
+        }
+      },
+      "FavoritosListResponse": {
+        "type": "object",
+        "properties": {
+          "favoritos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Favorito"
+            }
+          }
+        }
+      },
+      "Favorito": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "itemId": { "type": "string" },
+          "shopId": { "type": "string" },
+          "productName": { "type": "string" },
+          "price": { "type": "number" },
+          "priceMin": { "type": "number", "nullable": true },
+          "priceMax": { "type": "number", "nullable": true },
+          "priceDiscountRate": { "type": "number", "nullable": true },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "commissionRate": { "type": "number", "nullable": true },
+          "commission": { "type": "number", "nullable": true },
+          "shopName": { "type": "string", "nullable": true },
+          "sales": { "type": "integer", "nullable": true },
+          "ratingStar": { "type": "number", "nullable": true },
+          "productLink": { "type": "string", "format": "uri", "nullable": true },
+          "offerLink": { "type": "string", "format": "uri", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CreateFavoritoRequest": {
+        "type": "object",
+        "required": ["itemId", "shopId", "productName", "price", "imageUrl"],
+        "properties": {
+          "itemId": { "type": "string", "minLength": 1 },
+          "shopId": { "type": "string", "minLength": 1 },
+          "productName": { "type": "string", "minLength": 1 },
+          "price": { "type": "number", "minimum": 0 },
+          "priceMin": { "type": "number", "minimum": 0 },
+          "priceMax": { "type": "number", "minimum": 0 },
+          "priceDiscountRate": { "type": "number", "minimum": 0 },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "commissionRate": { "type": "number", "minimum": 0 },
+          "commission": { "type": "number", "minimum": 0 },
+          "shopName": { "type": "string" },
+          "sales": { "type": "integer", "minimum": 0 },
+          "ratingStar": { "type": "number", "minimum": 0 },
+          "productLink": { "type": "string", "format": "uri" },
+          "offerLink": { "type": "string", "format": "uri" }
+        }
+      },
+      "FavoritoResponse": {
+        "type": "object",
+        "properties": {
+          "favorito": {
+            "$ref": "#/components/schemas/Favorito"
+          }
+        }
+      },
+      "ColecoesListResponse": {
+        "type": "object",
+        "properties": {
+          "colecoes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Colecao"
+            }
+          }
+        }
+      },
+      "Colecao": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "nome": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CreateColecaoRequest": {
+        "type": "object",
+        "required": ["nome"],
+        "properties": {
+          "nome": { "type": "string", "minLength": 1 }
+        }
+      },
+      "ColecaoResponse": {
+        "type": "object",
+        "properties": {
+          "colecao": {
+            "$ref": "#/components/schemas/Colecao"
+          }
+        }
+      },
+      "AutomacaoResponse": {
+        "type": "object",
+        "properties": {
+          "automacao": {
+            "$ref": "#/components/schemas/Automacao"
+          },
+          "grupos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "nome": { "type": "string" },
+                "isActive": { "type": "boolean" },
+                "colecaoId": { "type": "string", "nullable": true },
+                "colecaoNome": { "type": "string", "nullable": true }
+              }
+            }
+          },
+          "resumo": {
+            "type": "object",
+            "properties": {
+              "ultimoRun": { "type": "string", "format": "date-time", "nullable": true },
+              "ultimoResultado": { "type": "string", "nullable": true },
+              "totalHoje": { "type": "integer" }
+            }
+          },
+          "logs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AutomacaoLog"
+            }
+          }
+        }
+      },
+      "Automacao": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "isActive": { "type": "boolean" },
+          "palavrasChave": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "descontoMinimo": { "type": "number", "nullable": true },
+          "comissaoMinima": { "type": "number", "nullable": true },
+          "horarioInicio": { "type": "string", "description": "Formato HH:mm" },
+          "horarioFim": { "type": "string", "description": "Formato HH:mm" },
+          "diasSemana": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0, "maximum": 6 },
+            "description": "0=Domingo, 6=Sabado"
+          },
+          "intervaloMinutos": { "type": "integer", "minimum": 1, "maximum": 1440 },
+          "limiteDiario": { "type": "integer", "minimum": 1, "maximum": 500 },
+          "gruposIds": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "AutomacaoLog": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "tipo": {
+            "type": "string",
+            "enum": ["exec", "divulgacao", "erro"]
+          },
+          "mensagem": { "type": "string" },
+          "dados": { "type": "object" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "UpdateAutomacaoRequest": {
+        "type": "object",
+        "required": ["horarioInicio", "horarioFim", "intervaloMinutos", "limiteDiario"],
+        "properties": {
+          "isActive": { "type": "boolean", "default": false },
+          "palavrasChave": {
+            "type": "array",
+            "items": { "type": "string" },
+            "default": []
+          },
+          "descontoMinimo": { "type": "number", "nullable": true },
+          "comissaoMinima": { "type": "number", "nullable": true },
+          "horarioInicio": { "type": "string" },
+          "horarioFim": { "type": "string" },
+          "diasSemana": {
+            "type": "array",
+            "items": { "type": "integer" },
+            "default": [0, 1, 2, 3, 4, 5, 6]
+          },
+          "intervaloMinutos": { "type": "integer", "minimum": 1, "maximum": 1440 },
+          "limiteDiario": { "type": "integer", "minimum": 1, "maximum": 500 },
+          "gruposIds": {
+            "type": "array",
+            "items": { "type": "string" },
+            "default": []
+          }
+        }
+      },
+      "DashboardSummaryResponse": {
+        "type": "object",
+        "properties": {
+          "enviosHoje": { "type": "integer", "description": "Total de mensagens enviadas hoje" },
+          "filaPendente": { "type": "integer", "description": "Mensagens na fila" },
+          "gruposAtivos": { "type": "integer", "description": "Grupos de WhatsApp ativos" },
+          "whatsappStatus": {
+            "type": "string",
+            "enum": ["connected", "disconnected", "connecting"]
+          },
+          "gruposResumo": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "string" },
+                "nome": { "type": "string" },
+                "totalEnvios": { "type": "integer" },
+                "enviosHoje": { "type": "integer" }
+              }
+            },
+            "description": "Top 6 grupos por envios"
+          }
+        }
+      },
+      "GenerateGanchoRequest": {
+        "type": "object",
+        "required": ["productName"],
+        "properties": {
+          "productName": { "type": "string", "minLength": 1 },
+          "imageUrl": { "type": "string", "format": "uri" },
+          "price": { "type": "number" },
+          "discount": { "type": "number" }
+        }
+      },
+      "GenerateGanchoResponse": {
+        "type": "object",
+        "properties": {
+          "gancho": {
+            "type": "string",
+            "description": "Frase de gancho gerada pela IA"
+          }
+        }
+      },
+      "CredenciaisResponse": {
+        "type": "object",
+        "properties": {
+          "shopee": {
+            "type": "object",
+            "properties": {
+              "configured": { "type": "boolean" },
+              "appId": { "type": "string", "description": "Mascarado" }
+            }
+          },
+          "evolution": {
+            "type": "object",
+            "properties": {
+              "configured": { "type": "boolean" },
+              "apiUrl": { "type": "string" },
+              "instanceName": { "type": "string" }
+            }
+          },
+          "llm": {
+            "type": "object",
+            "properties": {
+              "configured": { "type": "boolean" },
+              "provider": { "type": "string" },
+              "model": { "type": "string" }
+            }
+          }
+        }
+      },
+      "UpdateCredenciaisRequest": {
+        "type": "object",
+        "properties": {
+          "shopeeAppId": { "type": "string" },
+          "shopeeSecret": { "type": "string" },
+          "evolutionApiUrl": { "type": "string", "format": "uri" },
+          "evolutionInstanceName": { "type": "string" },
+          "evolutionApiKey": { "type": "string" },
+          "llmProvider": { "type": "string", "description": "Ex: openai, google" },
+          "llmModel": { "type": "string", "description": "Ex: gpt-4o-mini, gemini-pro" },
+          "llmApiKey": { "type": "string" }
+        }
+      },
+      "EnviosListResponse": {
+        "type": "object",
+        "properties": {
+          "envios": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Envio"
+            }
+          }
+        }
+      },
+      "Envio": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["pendente", "enviando", "enviado", "erro"]
+          },
+          "erro": { "type": "string", "nullable": true },
+          "enviadoEm": { "type": "string", "format": "date-time", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "grupo": {
+            "$ref": "#/components/schemas/WhatsAppGroup"
+          },
+          "divulgacao": {
+            "$ref": "#/components/schemas/Divulgacao"
+          }
+        }
+      }
+    }
+  }
+}

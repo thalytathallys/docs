@@ -1,0 +1,45 @@
+---
+title: "Listar Grupos"
+api: "GET /whatsapp/grupos"
+description: "Lista todos os grupos de WhatsApp conectados"
+---
+
+Retorna todos os grupos de WhatsApp da instancia conectada, junto com as configuracoes salvas (ativo, colecao).
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/whatsapp/grupos
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "grupos": [
+    {
+      "id": "120363295648424210@g.us",
+      "subject": "Promocoes Diarias",
+      "isActive": true,
+      "colecaoId": "clx1234567890",
+      "colecaoNome": "Grupos Premium"
+    },
+    {
+      "id": "120363295648424211@g.us",
+      "subject": "Ofertas Relampago",
+      "isActive": false,
+      "colecaoId": null,
+      "colecaoNome": null
+    }
+  ],
+  "instance": {
+    "id": "clx9876543210",
+    "instanceName": "minha_instancia",
+    "status": "connected"
+  }
+}
+```
+
+</ResponseExample>

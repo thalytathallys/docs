@@ -1,0 +1,27 @@
+---
+title: "Excluir Template"
+api: "DELETE /templates/{id}"
+description: "Remove um template"
+---
+
+<ParamField path="id" type="string" required>
+  ID do template
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X DELETE http://localhost:3000/api/templates/clx123
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "ok": true
+}
+```
+
+</ResponseExample>

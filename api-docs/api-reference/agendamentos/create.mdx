@@ -1,0 +1,69 @@
+---
+title: "Criar Agendamento"
+api: "POST /agendamentos"
+description: "Agenda uma divulgacao para envio"
+---
+
+<ParamField body="divulgacaoId" type="string" required>
+  ID da divulgacao
+</ParamField>
+
+<ParamField body="dataHora" type="string">
+  Data/hora do envio (ISO 8601). Se nulo, envio imediato.
+</ParamField>
+
+<ParamField body="grupos" type="array" required>
+  Grupos de destino
+
+  <Expandable title="Propriedades">
+    <ParamField body="id" type="string" required>
+      JID do grupo
+    </ParamField>
+    <ParamField body="nome" type="string" required>
+      Nome do grupo
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<RequestExample>
+
+```bash Agendado
+curl -X POST http://localhost:3000/api/agendamentos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "divulgacaoId": "clx1234567890",
+    "dataHora": "2024-01-15T14:00:00Z",
+    "grupos": [
+      {"id": "120363...@g.us", "nome": "Promocoes"}
+    ]
+  }'
+```
+
+```bash Imediato
+curl -X POST http://localhost:3000/api/agendamentos \
+  -H "Content-Type: application/json" \
+  -d '{
+    "divulgacaoId": "clx1234567890",
+    "grupos": [
+      {"id": "120363...@g.us", "nome": "Promocoes"}
+    ]
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 201
+{
+  "agendamento": {
+    "id": "clx9876543210",
+    "dataHora": "2024-01-15T14:00:00Z",
+    "status": "pendente",
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  "immediate": false
+}
+```
+
+</ResponseExample>

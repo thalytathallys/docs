@@ -1,0 +1,32 @@
+---
+title: "Obter Template"
+api: "GET /templates/{id}"
+description: "Retorna detalhes de um template"
+---
+
+<ParamField path="id" type="string" required>
+  ID do template
+</ParamField>
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/templates/clx123
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "template": {
+    "id": "clx123",
+    "nome": "Meu Template",
+    "conteudo": "{gancho}\n\n{nome}",
+    "isDefault": false
+  }
+}
+```
+
+</ResponseExample>

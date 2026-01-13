@@ -1,0 +1,34 @@
+---
+title: "Gerar Gancho"
+api: "POST /ai/gancho"
+description: "Gera uma frase de gancho usando IA"
+---
+
+<ParamField body="productName" type="string" required>Nome do produto</ParamField>
+<ParamField body="imageUrl" type="string">URL da imagem</ParamField>
+<ParamField body="price" type="number">Preco</ParamField>
+<ParamField body="discount" type="number">Desconto (%)</ParamField>
+
+<RequestExample>
+
+```bash
+curl -X POST http://localhost:3000/api/ai/gancho \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productName": "Fone Bluetooth TWS Pro",
+    "price": 49.90,
+    "discount": 30
+  }'
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "gancho": "Preco de Black Friday o ano todo! Nao perca essa oportunidade unica!"
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,35 @@
+---
+title: "Listar Templates"
+api: "GET /templates"
+description: "Lista todos os templates de mensagem"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/templates
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "templates": [
+    {
+      "id": "clx123",
+      "nome": "Template Padrao",
+      "conteudo": "{gancho}\n\n{emoji_titulo} {nome}\n\n{emoji_preco} Por: {preco}",
+      "isDefault": true,
+      "emojiTitulo": "",
+      "emojiPreco": "",
+      "emojiLink": "",
+      "emojiDesconto": "",
+      "createdAt": "2024-01-15T10:00:00Z"
+    }
+  ]
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,34 @@
+---
+title: "Listar Templates Visuais"
+api: "GET /templates-visual"
+description: "Lista todos os templates visuais"
+---
+
+<RequestExample>
+
+```bash
+curl http://localhost:3000/api/templates-visual
+```
+
+</RequestExample>
+
+<ResponseExample>
+
+```json 200
+{
+  "templates": [
+    {
+      "id": "clx123",
+      "nome": "Tema Vermelho",
+      "layout": "card",
+      "corFundo": "#FF0000",
+      "corTexto": "#FFFFFF",
+      "corPreco": "#FFFF00",
+      "corBotao": "#000000",
+      "isDefault": true
+    }
+  ]
+}
+```
+
+</ResponseExample>
