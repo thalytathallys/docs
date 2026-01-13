@@ -1,122 +1,181 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "maple",
+  "name": "Divulga Shopee API",
+  "description": "API de automacao para afiliados Shopee divulgarem produtos em grupos de WhatsApp",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#F53D2D",
+    "light": "#FF6A5B",
+    "dark": "#D0321E"
+  },
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentacao",
         "groups": [
           {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
+            "group": "Introducao",
+            "icon": "book",
+            "pages": ["index", "quickstart", "authentication"]
           },
           {
-            "group": "Customization",
+            "group": "Conceitos",
+            "icon": "lightbulb",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "concepts/divulgacoes",
+              "concepts/templates",
+              "concepts/grupos",
+              "concepts/automacao"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Shopee",
+            "icon": "shop",
+            "pages": ["api-reference/shopee/search-products"]
+          },
+          {
+            "group": "WhatsApp",
+            "icon": "whatsapp",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/whatsapp/get-groups",
+              "api-reference/whatsapp/update-groups",
+              "api-reference/whatsapp/get-status",
+              "api-reference/whatsapp/connect",
+              "api-reference/whatsapp/send-message"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Divulgacoes",
+            "icon": "megaphone",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/divulgacoes/list",
+              "api-reference/divulgacoes/create"
+            ]
+          },
+          {
+            "group": "Agendamentos",
+            "icon": "calendar",
+            "pages": [
+              "api-reference/agendamentos/list",
+              "api-reference/agendamentos/create",
+              "api-reference/agendamentos/get",
+              "api-reference/agendamentos/delete"
+            ]
+          },
+          {
+            "group": "Templates",
+            "icon": "file-lines",
+            "pages": [
+              "api-reference/templates/list",
+              "api-reference/templates/create",
+              "api-reference/templates/get",
+              "api-reference/templates/update",
+              "api-reference/templates/delete"
+            ]
+          },
+          {
+            "group": "Templates Visuais",
+            "icon": "palette",
+            "pages": [
+              "api-reference/templates-visual/list",
+              "api-reference/templates-visual/create",
+              "api-reference/templates-visual/get",
+              "api-reference/templates-visual/update",
+              "api-reference/templates-visual/delete"
+            ]
+          },
+          {
+            "group": "Favoritos",
+            "icon": "heart",
+            "pages": [
+              "api-reference/favoritos/list",
+              "api-reference/favoritos/create",
+              "api-reference/favoritos/delete"
+            ]
+          },
+          {
+            "group": "Colecoes",
+            "icon": "folder",
+            "pages": [
+              "api-reference/colecoes/list",
+              "api-reference/colecoes/create",
+              "api-reference/colecoes/get",
+              "api-reference/colecoes/update",
+              "api-reference/colecoes/delete"
+            ]
+          },
+          {
+            "group": "Automacao",
+            "icon": "robot",
+            "pages": [
+              "api-reference/automacao/get",
+              "api-reference/automacao/update",
+              "api-reference/automacao/run"
+            ]
+          },
+          {
+            "group": "Dashboard",
+            "icon": "chart-line",
+            "pages": ["api-reference/dashboard/summary"]
+          },
+          {
+            "group": "AI",
+            "icon": "sparkles",
+            "pages": ["api-reference/ai/generate-gancho"]
+          },
+          {
+            "group": "Credenciais",
+            "icon": "key",
+            "pages": [
+              "api-reference/credenciais/get",
+              "api-reference/credenciais/update"
+            ]
+          },
+          {
+            "group": "Envios",
+            "icon": "paper-plane",
+            "pages": [
+              "api-reference/envios/list",
+              "api-reference/envios/get",
+              "api-reference/envios/retry"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
+    ]
+  },
+  "api": {
+    "baseUrl": "http://localhost:3000/api",
+    "playground": {
+      "mode": "simple"
     }
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
+  "openapi": "openapi.json",
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Dashboard",
+        "href": "http://localhost:3000/dashboard"
       }
     ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/seu-usuario/divulga-shopee"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/seu-usuario/divulga-shopee"
     }
   }
 }

@@ -1,43 +1,80 @@
-# Mintlify Starter Kit
+# Divulga Shopee API - Documentacao
 
-Use the starter kit to get your docs deployed and ready to customize.
+Documentacao da API usando [Mintlify](https://mintlify.com).
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## Setup
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+### 1. Instalar Mintlify CLI
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
-npm i -g mint
+```bash
+npm i -g mintlify
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+### 2. Executar localmente
+
+```bash
+cd api-docs
+mintlify dev
+```
+
+A documentacao estara disponivel em `http://localhost:3000`.
+
+## Estrutura
 
 ```
-mint dev
+api-docs/
+├── docs.json              # Configuracao do Mintlify
+├── openapi.json           # Especificacao OpenAPI
+├── index.mdx              # Pagina inicial
+├── quickstart.mdx         # Guia de inicio rapido
+├── authentication.mdx     # Autenticacao
+├── concepts/              # Conceitos e guias
+│   ├── divulgacoes.mdx
+│   ├── templates.mdx
+│   ├── grupos.mdx
+│   └── automacao.mdx
+└── api-reference/         # Referencia da API
+    ├── shopee/
+    ├── whatsapp/
+    ├── divulgacoes/
+    ├── agendamentos/
+    ├── templates/
+    ├── templates-visual/
+    ├── favoritos/
+    ├── colecoes/
+    ├── automacao/
+    ├── dashboard/
+    ├── ai/
+    ├── credenciais/
+    └── envios/
 ```
 
-View your local preview at `http://localhost:3000`.
+## Deploy
 
-## Publishing changes
+### Mintlify Cloud
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+1. Crie uma conta em [mintlify.com](https://mintlify.com)
+2. Conecte seu repositorio GitHub
+3. Configure o diretorio como `api-docs`
 
-## Need help?
+### Self-hosted
 
-### Troubleshooting
+```bash
+mintlify build
+# Os arquivos estaticos estarao em .mintlify/
+```
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+## Customizacao
 
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+Edite `docs.json` para:
+
+- Alterar cores e tema
+- Adicionar logo
+- Configurar navegacao
+- Adicionar integracoes (Analytics, etc.)
+
+## Recursos
+
+- [Documentacao Mintlify](https://mintlify.com/docs)
+- [Componentes MDX](https://mintlify.com/docs/content/components)
+- [Especificacao OpenAPI](https://mintlify.com/docs/api-playground/openapi)
